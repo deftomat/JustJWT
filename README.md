@@ -1,5 +1,7 @@
 # JustJWT
 
+[![Build Status](https://travis-ci.org/deftomat/JustJWT.svg?branch=master)](https://travis-ci.org/deftomat/JustJWT)
+
 A simple JWT library for Dart with support for custom signature algorithms.
 
 Library already supports HS256 and RS256 algorithms.
