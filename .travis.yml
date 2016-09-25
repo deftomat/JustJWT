@@ -12,3 +12,6 @@ cache:
     - $HOME/.pub-cache
 
 script: ./tool/travis.sh
+
+before_install:
+ - chmod +x ./tool/travis.sh
