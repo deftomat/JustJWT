@@ -54,5 +54,5 @@ A simple decoding example:
 
 Algorithm name is always stored in JWT. Encoders/Decoders tries to find a Signer/Verifier by its name in signers/verifiers map.
 
-To support custom algorithm, just implement a [JWT interface](https://github.com/deftomat/JustJWT/blob/master/lib/src/tokens/jwt.dart) and create your own Verifier/Signer.
+To support custom algorithm, just implement a [JWT interface](https://github.com/deftomat/JustJWT/blob/master/lib/src/tokens/jwt.dart) and create your own [Verifier/Signer](https://github.com/deftomat/JustJWT/blob/master/lib/src/signatures.dart).
 
