@@ -3,11 +3,11 @@ import 'package:just_jwt/src/tokens.dart';
 
 void main() {
   group('The HS256 JWT ', () {
-    testJwt((payload) => new Jwt.HS256(payload), 'HS256');
+    testJwt((Map payload) => new Jwt.HS256(payload), 'HS256');
   });
 
   group('The RS256 JWT ', () {
-    testJwt((payload) => new Jwt.RS256(payload), 'RS256');
+    testJwt((Map payload) => new Jwt.RS256(payload), 'RS256');
   });
 }
 
