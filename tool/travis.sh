@@ -4,4 +4,4 @@
 set -e
 
 # Run the tests.
-pub run test -p vm,content-shell
+pub run test
