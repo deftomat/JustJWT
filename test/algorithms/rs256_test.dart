@@ -7,7 +7,7 @@ void main() {
   final String publicKey = '-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdlatRjRjogo3WojgGHFHYLugdUWAY9iR3fy4arWNA1KoS8kVw33cJibXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQsHUfQrSDv+MuSUMAe8jzKE4qW+jK+xQU9a03GUnKHkkle+Q0pX/g6jXZ7r1/xAK5Do2kQ+X5xK9cipRgEKwIDAQAB\n-----END PUBLIC KEY-----';
   final String message = 'message';
   final String corruptedMessage = 'corrupted_message';
-  final String expectedSignature = 'xlkFbDN1BEqngjC0HKrmJh9k9KANzvpwdRf8xJuRLpF5zdMG0F7Ln6bx2Dr6tzWejGXGEokub8JW-yzolLbrgABHHQPIP4Vd81eWTE-r8DXvjWcOc_i27RD0py8v6moGKsssYnJrgEFtYksyG4_MS5k-LO8vHI2l34eTaWxLEss=';
+  final List<int> expectedSignature = [198, 89, 5, 108, 51, 117, 4, 74, 167, 130, 48, 180, 28, 170, 230, 38, 31, 100, 244, 160, 13, 206, 250, 112, 117, 23, 252, 196, 155, 145, 46, 145, 121, 205, 211, 6, 208, 94, 203, 159, 166, 241, 216, 58, 250, 183, 53, 158, 140, 101, 198, 18, 137, 46, 111, 194, 86, 251, 44, 232, 148, 182, 235, 128, 0, 71, 29, 3, 200, 63, 133, 93, 243, 87, 150, 76, 79, 171, 240, 53, 239, 141, 103, 14, 115, 248, 182, 237, 16, 244, 167, 47, 47, 234, 106, 6, 42, 203, 44, 98, 114, 107, 128, 65, 109, 98, 75, 50, 27, 143, 204, 75, 153, 62, 44, 239, 47, 28, 141, 165, 223, 135, 147, 105, 108, 75, 18, 203];
 
   group('The RS256 signer ', () {
     Signer signer;

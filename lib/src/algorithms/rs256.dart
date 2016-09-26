@@ -1,7 +1,6 @@
 /// Provides an factories for RS256 signers and verifiers.
 library just_jwt.algorithms.rs256;
 
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bignum/bignum.dart';
@@ -31,7 +30,7 @@ Signer createRS256Signer(String pem) {
 
   return (String toSign) {
     var message = new Uint8List.fromList(toSign.codeUnits);
-    return BASE64URL.encode(signer.generateSignature(message).bytes);
+    return signer.generateSignature(message).bytes;
   };
 }
 
@@ -51,8 +50,8 @@ Verifier createRS256Verifier(String pem) {
 
   var signer = _createSigner(publicKeyParams, false);
 
-  return (String message, String signature) {
-    var rsaSignature = new pointy.RSASignature(new Uint8List.fromList(BASE64URL.decode(signature)));
+  return (String message, List<int> signature) {
+    var rsaSignature = new pointy.RSASignature(new Uint8List.fromList(signature));
     return signer.verifySignature(new Uint8List.fromList(message.codeUnits), rsaSignature);
   };
 }

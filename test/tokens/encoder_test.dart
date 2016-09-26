@@ -6,7 +6,7 @@ void main() {
   Encoder encoder;
 
   group('Encoding of a Jwt', () {
-    final String signature = 'signature';
+    final List<int> signature = [0, 1, 2];
     EncodedJwt encodedJwt;
 
     setUp(() {
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('should create an EncodedJwt with an expected signature.', () {
-      expect(encodedJwt.signature, equals(signature));
+      expect(encodedJwt.signature, equals('AAEC'));
     });
   });
 

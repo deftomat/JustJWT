@@ -1,6 +1,6 @@
 name: just_jwt
 description: A JWT library for Dart.
-version: 1.0.0
+version: 1.1.0
 author: Tomas Szabo <tomas.szabo@deftomat.com>
 homepage: https://github.com/deftomat/JustJWT
 
@@ -11,6 +11,7 @@ dependencies:
   crypto: '^2.0.1'
   pointycastle: '^0.10.0'
   rsa_pkcs: '^0.1.2'
+  collection: '^1.9.1'
 
 dev_dependencies:
   test: '^0.12.15'

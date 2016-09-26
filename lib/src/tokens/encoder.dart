@@ -13,21 +13,21 @@ class Encoder extends Converter<Jwt, EncodedJwt> {
   EncodedJwt convert(Jwt jwt) {
     var signer = _tryFindSigner(jwt);
 
-    var encodedHeader = _encode(jwt.header);
-    var encodedPayload = _encode(jwt.payload);
-    var signature = signer('$encodedHeader.$encodedPayload');
+    var encodedHeader = _encodeMap(jwt.header);
+    var encodedPayload = _encodeMap(jwt.payload);
 
-    return new _EncodedJwt(encodedHeader, encodedPayload, signature);
+    var signature = signer('$encodedHeader.$encodedPayload');
+    var encodedSignature = _encodeBytes(signature);
+
+    return new _EncodedJwt(encodedHeader, encodedPayload, encodedSignature);
   }
 
   Signer _tryFindSigner(Jwt jwt) {
-    var signer = _signers[jwt.alg];
-    if (signer == null) throw new UnsupportedSigningAlgError(jwt);
-
-    return signer;
+    return _signers[jwt.alg] ?? (throw new UnsupportedSigningAlgError(jwt));
   }
 
-  String _encode(Map map) => BASE64URL.encode(JSON.encode(map).codeUnits);
+  String _encodeMap(Map map) => _encodeBytes(JSON.encode(map).codeUnits);
+  String _encodeBytes(List<int> bytes) => BASE64URL.encode(bytes);
 }
 
 /// Occurs when the JWT's alg is not supported by any signer in encoder.

@@ -6,7 +6,7 @@ void main() {
   final String key = 'secret';
   final String message = 'message';
   final String corruptedMessage = 'corrupted_message';
-  final String expectedSignature = 'i19IcCmVwVmMVz2x4hhmqbgl1KeU0WnXBgoDYFeWNgs=';
+  final List<int> expectedSignature = [139, 95, 72, 112, 41, 149, 193, 89, 140, 87, 61, 177, 226, 24, 102, 169, 184, 37, 212, 167, 148, 209, 105, 215, 6, 10, 3, 96, 87, 150, 54, 11];
 
   group('The HS256 signer ', () {
     Signer signer;

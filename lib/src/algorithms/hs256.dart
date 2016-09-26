@@ -1,9 +1,8 @@
 /// Provides an factories for HS256 signers and verifiers.
 library just_jwt.algorithms.hs256;
 
-import 'dart:convert';
-
 import 'package:crypto/crypto.dart' show sha256, Hmac;
+import 'package:collection/collection.dart';
 
 import 'package:just_jwt/src/signatures.dart';
 
@@ -13,13 +12,17 @@ Signer createHS256Signer(String key) {
 
   return (String message) {
     var hash = hmac.convert(message.codeUnits);
-    return BASE64URL.encode(hash.bytes);
+    return hash.bytes;
   };
 }
 
 /// Returns the new HS256 verifier with secret [key].
 Verifier createHS256Verifier(String key) {
+  var areEquals = const ListEquality().equals;
   var signer = createHS256Signer(key);
 
-  return (String message, String signature) => signer(message) == signature;
+  return (String message, List<int> signature) {
+    var validSignature = signer(message);
+    return areEquals(validSignature, signature);
+  };
 }

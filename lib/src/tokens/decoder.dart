@@ -11,32 +11,34 @@ class Decoder extends Converter<EncodedJwt, Jwt> {
   /// Converts the instance of [EncodedJwt] to the instance of [JWT].
   /// Also, verifies the JWT's signature.
   Jwt convert(EncodedJwt encodedJwt) {
-    var decodedHeader = _decode(encodedJwt.header);
-    var decodedPayload = _decode(encodedJwt.payload);
-    var jwt = new _Jwt.from(decodedHeader, decodedPayload);
+    var header = _decodeMap(encodedJwt.header);
+    var payload = _decodeMap(encodedJwt.payload);
+    var jwt = new _Jwt.from(header, payload);
 
     _checkSignature(encodedJwt, jwt.alg);
 
     return jwt;
   }
 
-  Map<String, dynamic> _decode(String part) {
-    var json = new String.fromCharCodes(BASE64URL.decode(part));
+  Map<String, dynamic> _decodeMap(String encoded) {
+    var bytes = _decodeBytes(encoded);
+    var json = new String.fromCharCodes(bytes);
     return JSON.decode(json);
   }
 
+  List<int> _decodeBytes(String encoded) => BASE64URL.decode(encoded);
+
   void _checkSignature(EncodedJwt encodedJwt, String alg) {
     var verifier = _tryFindVerifier(encodedJwt, alg);
+    var toVerify = '${encodedJwt.header}.${encodedJwt.payload}';
+    var signature = _decodeBytes(encodedJwt.signature);
 
-    if (verifier('${encodedJwt.header}.${encodedJwt.payload}', encodedJwt.signature) == false)
+    if (verifier(toVerify, signature) == false)
       throw new InvalidJwtSignatureError(encodedJwt);
   }
 
   Verifier _tryFindVerifier(EncodedJwt encodedJwt, String alg) {
-    var verifier = _verifiers[alg];
-    if (verifier == null) throw new UnsupportedVerificationAlgError(alg, encodedJwt);
-
-    return verifier;
+    return _verifiers[alg] ?? (throw new UnsupportedVerificationAlgError(alg, encodedJwt));
   }
 }
 
