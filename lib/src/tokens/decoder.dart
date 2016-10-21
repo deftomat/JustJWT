@@ -4,9 +4,9 @@ part of just_jwt.tokens;
 ///
 /// Decoding process involves the signature verification by one of the supported verifier.
 class Decoder extends Converter<EncodedJwt, Jwt> {
-  final Map<String, Verifier> _verifiers;
+  final TokenVerifier _verifier;
 
-  Decoder(this._verifiers);
+  Decoder(this._verifier);
 
   /// Converts the instance of [EncodedJwt] to the instance of [JWT].
   /// Also, verifies the JWT's signature.
@@ -15,7 +15,7 @@ class Decoder extends Converter<EncodedJwt, Jwt> {
     var payload = _decodeMap(encodedJwt.payload);
     var jwt = new _Jwt.from(header, payload);
 
-    _checkSignature(encodedJwt, jwt.alg);
+    _checkSignature(jwt, encodedJwt);
 
     return jwt;
   }
@@ -38,24 +38,12 @@ class Decoder extends Converter<EncodedJwt, Jwt> {
     return encoded.padRight(normalizedLength, '=');
   }
 
-  void _checkSignature(EncodedJwt encodedJwt, String alg) {
-    var verifier = _tryFindVerifier(encodedJwt, alg);
-    var toVerify = '${encodedJwt.header}.${encodedJwt.payload}';
+  void _checkSignature(Jwt jwt, EncodedJwt encodedJwt) {
     var signature = _decodeBytes(encodedJwt.signature);
+    var toVerify = new ToVerify(jwt, encodedJwt, signature);
 
-    if (verifier(toVerify, signature) == false)
-      throw new InvalidJwtSignatureError(encodedJwt);
+    if (_verifier(toVerify) == false) throw new InvalidJwtSignatureError(encodedJwt);
   }
-
-  Verifier _tryFindVerifier(EncodedJwt encodedJwt, String alg) {
-    return _verifiers[alg] ?? (throw new UnsupportedVerificationAlgError(alg, encodedJwt));
-  }
-}
-
-/// Occurs when the JWT's alg is not supported by any verifier in decoder.
-class UnsupportedVerificationAlgError extends JwtDecodingError {
-  UnsupportedVerificationAlgError(String alg, EncodedJwt jwt)
-      : super('Unsupported algorithm: Cannot verify JWT due to unsupported [$alg] algorithm!', jwt);
 }
 
 /// Occurs when the JWT's signature is not valid.

@@ -4,36 +4,25 @@ part of just_jwt.tokens;
 ///
 /// Encoding involves the signing of the JWT.
 class Encoder extends Converter<Jwt, EncodedJwt> {
-  final Map<String, Signer> _signers;
+  final TokenSigner _signer;
 
-  Encoder(this._signers);
+  Encoder(this._signer);
 
   /// Converts the instance of [Jwt] to the instance of [EncodedJwt].
   /// Also, signs the JWT.
   EncodedJwt convert(Jwt jwt) {
-    var signer = _tryFindSigner(jwt);
-
     var encodedHeader = _encodeMap(jwt.header);
     var encodedPayload = _encodeMap(jwt.payload);
+    var toSign = new ToSign(jwt, encodedHeader, encodedPayload);
 
-    var signature = signer('$encodedHeader.$encodedPayload');
+    var signature = _signer(toSign);
     var encodedSignature = _encodeBytes(signature);
 
     return new _EncodedJwt(encodedHeader, encodedPayload, encodedSignature);
   }
 
-  Signer _tryFindSigner(Jwt jwt) {
-    return _signers[jwt.alg] ?? (throw new UnsupportedSigningAlgError(jwt));
-  }
-
   String _encodeMap(Map map) => _encodeBytes(JSON.encode(map).codeUnits);
   String _encodeBytes(List<int> bytes) => BASE64URL.encode(bytes);
-}
-
-/// Occurs when the JWT's alg is not supported by any signer in encoder.
-class UnsupportedSigningAlgError extends JwtEncodingError {
-  UnsupportedSigningAlgError(Jwt jwt)
-      : super('Unsupported algorithm: Cannot sign JWT due to unsupported [${jwt.alg}] algorithm!', jwt);
 }
 
 /// Occurs when JWT encoding fails.

@@ -9,3 +9,5 @@ part 'tokens/decoder.dart';
 part 'tokens/encoded_jwt.dart';
 part 'tokens/encoder.dart';
 part 'tokens/jwt.dart';
+part 'tokens/signers.dart';
+part 'tokens/verifiers.dart';

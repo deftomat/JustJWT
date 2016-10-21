@@ -1,6 +1,7 @@
 /// Provides an factories for RS256 signers and verifiers.
 library just_jwt.algorithms.rs256;
 
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bignum/bignum.dart';
@@ -34,7 +35,7 @@ Signer createRS256Signer(String pem) {
   };
 }
 
-/// Returns the new RS256 verifier with the public key obtained from [pem].
+/// Returns the new RS256 verifier with a public key obtained from [pem].
 ///
 /// [pem] should contains at least a public key in a following format:
 /// -----BEGIN PUBLIC KEY-----\n
@@ -46,6 +47,22 @@ Verifier createRS256Verifier(String pem) {
   if (rawKey == null) throw new ArgumentError.value(pem, 'publicPem', 'Public PEM is not valid!');
 
   var publicKey = new pointy.RSAPublicKey(rawKey.modulus, new BigInteger(rawKey.publicExponent));
+  return _createVerifier(publicKey);
+}
+
+/// Returns the new RS256 verifier with a public key defined by [encodedModulus] and [encodedExponent].
+///
+/// Parameters are Base64urlUInt-encoded values as described in:
+/// RFC 7518 - JSON WEB Algorithms (https://tools.ietf.org/html/rfc7518#section-6.3)
+Verifier createJwaRS256Verifier(String encodedModulus, String encodedExponent) {
+  var n = new BigInteger.fromBytes(1, BASE64.decode(encodedModulus));
+  var e = new BigInteger.fromBytes(1, BASE64.decode(encodedExponent));
+  var publicKey = new pointy.RSAPublicKey(n, e);
+
+  return _createVerifier(publicKey);
+}
+
+Verifier _createVerifier(pointy.RSAPublicKey publicKey) {
   var publicKeyParams = new pointy.PublicKeyParameter(publicKey);
 
   var signer = _createSigner(publicKeyParams, false);

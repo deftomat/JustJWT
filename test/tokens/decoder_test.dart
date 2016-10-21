@@ -9,8 +9,8 @@ void main() {
     Jwt jwt;
 
     setUp(() {
-      var verifiers = {'HS256': (message, signature) => true};
-      decoder = new Decoder(verifiers);
+      var verifier = (ToVerify toVerify) => true;
+      decoder = new Decoder(verifier);
     });
 
     setUp(() {
@@ -30,22 +30,10 @@ void main() {
     });
   });
 
-  group('Decoding of an EncodedJwt with an unsupported algorithm ', () {
-    setUp(() {
-      var verifiers = {'another': (message, signature) => true};
-      decoder = new Decoder(verifiers);
-    });
-
-    test('should throws an UnsupportedVerificationAlgError.', () {
-      var expectedError = new isInstanceOf<UnsupportedVerificationAlgError>();
-      expect(() => decoder.convert(encodedJwt), throwsA(expectedError));
-    });
-  });
-
   group('Decoding of an EncodedJwt with an invalid signature ', () {
     setUp(() {
-      var verifiers = {'HS256': (message, signature) => false};
-      decoder = new Decoder(verifiers);
+      var verifier = (ToVerify toVerify) => false;
+      decoder = new Decoder(verifier);
     });
 
     test('should throws an InvalidJwtSignatureError.', () {

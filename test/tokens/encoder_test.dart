@@ -10,8 +10,8 @@ void main() {
     EncodedJwt encodedJwt;
 
     setUp(() {
-      var signers = {'HS256': (message) => signature};
-      encoder = new Encoder(signers);
+      var signer = (ToSign toSign) => signature;
+      encoder = new Encoder(signer);
     });
 
     setUp(() {
@@ -28,18 +28,6 @@ void main() {
 
     test('should create an EncodedJwt with an expected signature.', () {
       expect(encodedJwt.signature, equals('AAEC'));
-    });
-  });
-
-  group('Encoding of an Jwt with an unsupported algorithm ', () {
-    setUp(() {
-      var signers = {'another': (message) => 'signature'};
-      encoder = new Encoder(signers);
-    });
-
-    test('should throws an UnsupportedSigningAlgError.', () {
-      var expectedError = new isInstanceOf<UnsupportedSigningAlgError>();
-      expect(() => encoder.convert(jwt), throwsA(expectedError));
     });
   });
 }
