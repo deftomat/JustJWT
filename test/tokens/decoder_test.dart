@@ -60,8 +60,8 @@ class _EncodedJwt implements EncodedJwt {
   String get header => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
 
   @override
-  String get payload => 'eyJjbGFpbSI6InZhbHVlIn0=';
+  String get payload => 'eyJjbGFpbSI6InZhbHVlIn0';
 
   @override
-  String get signature => 'DWYUYxNvKDWUU5ILY3qive7eXYgUeZb9mUzuaGW6tT8=';
+  String get signature => 'DWYUYxNvKDWUU5ILY3qive7eXYgUeZb9mUzuaGW6tT8';
 }

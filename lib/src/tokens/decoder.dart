@@ -26,7 +26,17 @@ class Decoder extends Converter<EncodedJwt, Jwt> {
     return JSON.decode(json);
   }
 
-  List<int> _decodeBytes(String encoded) => BASE64URL.decode(encoded);
+  List<int> _decodeBytes(String encoded) {
+    var normalized = _normalizeBASE64(encoded);
+    return BASE64URL.decode(normalized);
+  }
+
+  String _normalizeBASE64(String encoded) {
+    var reminder = encoded.length % 4;
+    var normalizedLength = encoded.length + (reminder == 0 ? 0 : 4 - reminder);
+
+    return encoded.padRight(normalizedLength, '=');
+  }
 
   void _checkSignature(EncodedJwt encodedJwt, String alg) {
     var verifier = _tryFindVerifier(encodedJwt, alg);
