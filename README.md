@@ -10,45 +10,49 @@ Library already supports HS256 and RS256 algorithms.
 
 A simple encoding example:
 
-    import 'package:just_jwt/just_jwt.dart';
+```dart
+import 'package:just_jwt/just_jwt.dart';
 
-    main() {
-      var signers = {
-        'HS256': createHS256Signer('secret')
-        'RS256': createRS256Signer('<private key>'),
-        // additional supported algorithms
-      };
-      
-      // Creates JWT encoder which supports ONLY tokens with HS256 or RS256 alg.
-      var encoder = new Encoder(signers);
-      
-      var jwt = new Jwt.HS256({'some': 'value'});
-      // or var jwt = new Jwt.RS256({'some': 'value'});
-      
-      // Encodes JWT
-      var encodedJwt = encoder.convert(jwt);
-      print(encodedJwt);
-    }
-    
+main() {
+  var signers = {
+    'HS256': createHS256Signer('secret')
+    'RS256': createRS256Signer('<private key>'),
+    // additional supported algorithms
+  };
+  
+  // Creates JWT encoder which supports ONLY tokens with HS256 or RS256 alg.
+  var encoder = new Encoder(signers);
+  
+  var jwt = new Jwt.HS256({'some': 'value'});
+  // or var jwt = new Jwt.RS256({'some': 'value'});
+  
+  // Encodes JWT
+  var encodedJwt = encoder.convert(jwt);
+  print(encodedJwt);
+}
+```
+
 A simple decoding example:
 
-    import 'package:just_jwt/just_jwt.dart';
+```dart
+import 'package:just_jwt/just_jwt.dart';
 
-    main() {
-      var verifiers = {
-        'HS256': createHS256Verifier('secret'),
-        'RS256': createRS256Verifier('<public key>'),
-        // additional supported algorithms
-      };
-      
-      // Creates decoder which support ONLY tokens with HS256 or RS256 alg.
-      // Unsupported algorithm will cause an UnsupportedVerificationAlgError.
-      var decoder = new Decoder(verifiers);
-      
-      var encodedJwt = new EncodedJwt('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoidmFsdWUifQ==.ZHaHisAt9O9fcGFAFanEvsRjlSqAELN7NdXvue-E1PQ=');
-      
-      var jwt = decoder.convert(encodedJwt);
-    }
+main() {
+  var verifiers = {
+    'HS256': createHS256Verifier('secret'),
+    'RS256': createRS256Verifier('<public key>'),
+    // additional supported algorithms
+  };
+  
+  // Creates decoder which support ONLY tokens with HS256 or RS256 alg.
+  // Unsupported algorithm will cause an UnsupportedVerificationAlgError.
+  var decoder = new Decoder(verifiers);
+  
+  var encodedJwt = new EncodedJwt('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoidmFsdWUifQ==.ZHaHisAt9O9fcGFAFanEvsRjlSqAELN7NdXvue-E1PQ=');
+  
+  var jwt = decoder.convert(encodedJwt);
+}
+```
 
 ## Custom algorithm
 
