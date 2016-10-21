@@ -1,6 +1,6 @@
 name: just_jwt
 description: A JWT library for Dart.
-version: 1.2.0
+version: 1.2.1
 author: Tomas Szabo <tomas.szabo@deftomat.com>
 homepage: https://github.com/deftomat/JustJWT
 
