@@ -12,7 +12,7 @@
 
 - Works with non-padded BASE64 strings.
 
-# 1.2.0
+# 1.2.1
 
 - Improved Signers/Verifiers composition.
 - New ```createJwaRS256Verifier``` function which creates a RSA256 verifier from encoded modulus and encoded exponent as described in RFC 7518.
