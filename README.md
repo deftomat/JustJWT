@@ -56,7 +56,20 @@ main() {
 
 ## Functional approach
 
-TODO
+Each Verifier and Signer is a function.
+
+As you can see in code example, there are a functions like ```toTokenSigner```,  ```toTokenVerifier```, ```composeTokenVerifiers```, etc.
+These functions provide a way how to compose a verifiers and signers.
+
+Also, you can combine a multiple TokenVerifiers into one TokenVerifier with ```combineTokenVerifiers``` function:
+
+```dart
+  var algorithmVerifier = toTokenVerifier(createHS256Verifier('secret'));
+  var expirationVerifier = (ToVerify toVerify) => // check token expiration
+  
+  var verifier = combineTokenVerifiers([algorithmVerifier, expirationVerifier]);
+  var decoder = new Decoder(verifier);
+```
 
 
 ## Custom algorithm
