@@ -2,7 +2,7 @@ part of just_jwt.tokens;
 
 /// Represents a JSON Web Token.
 abstract class Jwt {
-  Map<String, String> get header;
+  Map<String, dynamic> get header;
   Map<String, dynamic> get payload;
   String get alg;
 
@@ -14,7 +14,7 @@ abstract class Jwt {
 }
 
 class _Jwt implements Jwt {
-  final Map<String, String> header;
+  final Map<String, dynamic> header;
   final Map<String, dynamic> payload;
 
   factory _Jwt.HS256(Map<String, dynamic> payload) => new _Jwt('HS256', payload);
