@@ -5,11 +5,11 @@ void main() {
   final Jwt jwt = new _Jwt();
   final toSign = new ToSign(jwt, 'a', 'b');
 
-  test('Should transform Signer into TokenSigner.', () {
+  test('Should transform Signer into TokenSigner.', () async {
     var signer = (String message) => message.codeUnits;
     var tokenSigner = toTokenSigner(signer);
 
-    expect(tokenSigner(toSign), equals('a.b'.codeUnits));
+    expect(await tokenSigner(toSign), equals('a.b'.codeUnits));
   });
 
   group('A multiple signers composition', () {

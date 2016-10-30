@@ -1,5 +1,6 @@
 library just_jwt.tokens;
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:just_jwt/src/errors.dart';

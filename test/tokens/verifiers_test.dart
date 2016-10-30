@@ -6,20 +6,20 @@ void main() {
   final EncodedJwt encodedJwt = new _EncodedJwt();
   final toVerify = new ToVerify(jwt, encodedJwt, [0, 1, 2]);
 
-  test('Should transform SignatureVerifier into TokenVerifier.', () {
+  test('Should transform SignatureVerifier into TokenVerifier.', () async {
     var verifier = (String message, List<int> signature) {
       return message == 'h.p' && signature == toVerify.signature;
     };
     var tokenVerifier = toTokenVerifier(verifier);
 
-    expect(tokenVerifier(toVerify), isTrue);
+    expect(await tokenVerifier(toVerify), isTrue);
   });
 
-  test('Should combine multiple verifiers.', () {
-    var verifiers = [(ToVerify toVerify) => true, (ToVerify toVerify) => false];
+  test('Should combine multiple verifiers.', () async {
+    var verifiers = [(ToVerify toVerify) async => true, (ToVerify toVerify) async => false];
     var verifier = combineTokenVerifiers(verifiers);
 
-    expect(verifier(toVerify), isFalse);
+    expect(await verifier(toVerify), isFalse);
   });
 
   group('A multiple verifiers composition', () {

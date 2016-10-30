@@ -11,11 +11,12 @@ Library already supports HS256 and RS256 algorithms.
 A simple encoding example:
 
 ```dart
+import 'dart:async';
 import 'package:just_jwt/just_jwt.dart';
 
-main() {
+main() async {
   var signers = {
-    'HS256': toTokenSigner(createHS256Signer('secret'))
+    'HS256': toTokenSigner(createHS256Signer('secret')),
     'RS256': toTokenSigner(createRS256Signer('<private key>')),
     // additional supported algorithms
   };
@@ -27,7 +28,7 @@ main() {
   // or var jwt = new Jwt.RS256({'some': 'value'});
   
   // Encodes JWT
-  var encodedJwt = encoder.convert(jwt);
+  var encodedJwt = await encoder.convert(jwt);
   print(encodedJwt);
 }
 ```
@@ -37,7 +38,7 @@ A simple decoding example:
 ```dart
 import 'package:just_jwt/just_jwt.dart';
 
-main() {
+main() async {
   var verifiers = {
     'HS256': toTokenVerifier(createHS256Verifier('secret')),
     'RS256': toTokenVerifier(createRS256Verifier('<public key>')),
@@ -50,7 +51,7 @@ main() {
   
   var encodedJwt = new EncodedJwt('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lIjoidmFsdWUifQ==.ZHaHisAt9O9fcGFAFanEvsRjlSqAELN7NdXvue-E1PQ=');
   
-  var jwt = decoder.convert(encodedJwt);
+  var jwt = await decoder.convert(encodedJwt);
 }
 ```
 
@@ -65,7 +66,7 @@ Also, you can combine a multiple TokenVerifiers into one TokenVerifier with ```c
 
 ```dart
   var algorithmVerifier = toTokenVerifier(createHS256Verifier('secret'));
-  var expirationVerifier = (ToVerify toVerify) => // check token expiration
+  var expirationVerifier = (ToVerify toVerify) async =>  // check token expiration
   
   var verifier = combineTokenVerifiers([algorithmVerifier, expirationVerifier]);
   var decoder = new Decoder(verifier);

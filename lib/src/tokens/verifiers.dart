@@ -1,7 +1,7 @@
 part of just_jwt.tokens;
 
 /// Verifies the [toVerify] structure.
-typedef bool TokenVerifier(ToVerify toVerify);
+typedef Future<bool> TokenVerifier(ToVerify toVerify);
 
 /// Contains context for [TokenVerifier].
 class ToVerify {
@@ -14,7 +14,7 @@ class ToVerify {
 
 /// Transforms an instance of [Verifier] into an instance of [TokenVerifier].
 TokenVerifier toTokenVerifier(Verifier verifier) {
-  return (ToVerify toVerify) {
+  return (ToVerify toVerify) async {
     var message = '${toVerify.encodedJwt.header}.${toVerify.encodedJwt.payload}';
     return verifier(message, toVerify.signature);
   };
@@ -24,8 +24,13 @@ TokenVerifier toTokenVerifier(Verifier verifier) {
 ///
 /// For example, combines a signature verifier with a custom claim verifiers.
 TokenVerifier combineTokenVerifiers(Iterable<TokenVerifier> verifiers) {
-  return (ToVerify toVerify) {
-    return !verifiers.any((verifier) => !verifier(toVerify));
+  return (ToVerify toVerify) async {
+    var computations = verifiers.map((verifier) => verifier(toVerify));
+
+    for (var computation in computations) {
+      if ((await computation) == false) return false;
+    }
+    return true;
   };
 }
 

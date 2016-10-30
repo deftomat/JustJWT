@@ -9,12 +9,12 @@ void main() {
     Jwt jwt;
 
     setUp(() {
-      var verifier = (ToVerify toVerify) => true;
+      var verifier = (ToVerify toVerify) async => true;
       decoder = new Decoder(verifier);
     });
 
-    setUp(() {
-      jwt = decoder.convert(encodedJwt);
+    setUp(() async {
+      jwt = await decoder.convert(encodedJwt);
     });
 
     test('should create a Jwt with an expected header.', () {
@@ -32,13 +32,13 @@ void main() {
 
   group('Decoding of an EncodedJwt with an invalid signature ', () {
     setUp(() {
-      var verifier = (ToVerify toVerify) => false;
+      var verifier = (ToVerify toVerify) async => false;
       decoder = new Decoder(verifier);
     });
 
-    test('should throws an InvalidJwtSignatureError.', () {
+    test('should throws an InvalidJwtSignatureError.', () async {
       var expectedError = new isInstanceOf<InvalidJwtSignatureError>();
-      expect(() => decoder.convert(encodedJwt), throwsA(expectedError));
+      expect(decoder.convert(encodedJwt), throwsA(expectedError));
     });
   });
 }

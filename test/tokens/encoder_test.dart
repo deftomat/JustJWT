@@ -10,12 +10,12 @@ void main() {
     EncodedJwt encodedJwt;
 
     setUp(() {
-      var signer = (ToSign toSign) => signature;
+      var signer = (ToSign toSign) async => signature;
       encoder = new Encoder(signer);
     });
 
-    setUp(() {
-      encodedJwt = encoder.convert(jwt);
+    setUp(() async {
+      encodedJwt = await encoder.convert(jwt);
     });
 
     test('should create an EncodedJwt with an expected header.', () {

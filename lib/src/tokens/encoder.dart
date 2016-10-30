@@ -3,19 +3,19 @@ part of just_jwt.tokens;
 /// Converter capable of encode the JWT.
 ///
 /// Encoding involves the signing of the JWT.
-class Encoder extends Converter<Jwt, EncodedJwt> {
+class Encoder extends Converter<Jwt, Future<EncodedJwt>> {
   final TokenSigner _signer;
 
   Encoder(this._signer);
 
   /// Converts the instance of [Jwt] to the instance of [EncodedJwt].
   /// Also, signs the JWT.
-  EncodedJwt convert(Jwt jwt) {
+  Future<EncodedJwt> convert(Jwt jwt) async {
     var encodedHeader = _encodeMap(jwt.header);
     var encodedPayload = _encodeMap(jwt.payload);
     var toSign = new ToSign(jwt, encodedHeader, encodedPayload);
 
-    var signature = _signer(toSign);
+    var signature = await _signer(toSign);
     var encodedSignature = _encodeBytes(signature);
 
     return new _EncodedJwt(encodedHeader, encodedPayload, encodedSignature);

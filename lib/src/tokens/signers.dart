@@ -1,7 +1,7 @@
 part of just_jwt.tokens;
 
 /// Returns a signature of the [toSign] structure.
-typedef List<int> TokenSigner(ToSign toSign);
+typedef Future<List<int>> TokenSigner(ToSign toSign);
 
 /// Contains context for [TokenSigner].
 class ToSign {
@@ -14,7 +14,7 @@ class ToSign {
 
 /// Transforms an instance of [Signer] into an instance of [TokenSigner].
 TokenSigner toTokenSigner(Signer signer) {
-  return (ToSign toSign) {
+  return (ToSign toSign) async {
     var message = '${toSign.encodedHeader}.${toSign.encodedPayload}';
     return signer(message);
   };
