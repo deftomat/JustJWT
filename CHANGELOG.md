@@ -16,3 +16,8 @@
 
 - Improved Signers/Verifiers composition.
 - New ```createJwaRS256Verifier``` function which creates a RSA256 verifier from encoded modulus and encoded exponent as described in RFC 7518.
+
+# 1.3.0
+
+- Changed JWT's header type from Map<String, String> to Map<String, dynamic>.
+- TokenVerifier and TokenSigner returns Future now.
