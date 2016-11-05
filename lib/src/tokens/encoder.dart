@@ -27,7 +27,7 @@ class Encoder extends Converter<Jwt, Future<EncodedJwt>> {
 
 /// Occurs when JWT encoding fails.
 abstract class JwtEncodingError extends JwtError {
-  final Jwt jwt;
+  Jwt get jwt;
 
-  JwtEncodingError(String message, this.jwt) : super(message);
+  JwtEncodingError(String message) : super(message);
 }

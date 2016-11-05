@@ -40,13 +40,17 @@ TokenVerifier combineTokenVerifiers(Iterable<TokenVerifier> verifiers) {
 TokenVerifier composeTokenVerifiers(Map<String, TokenVerifier> verifiers) {
   return (ToVerify toVerify) {
     var alg = toVerify.jwt.alg;
-    var verifier = verifiers[alg] ?? (throw new UnsupportedVerificationAlgError(alg, toVerify.encodedJwt));
+    var verifier = verifiers[alg] ?? (throw new UnsupportedVerificationAlgError(toVerify));
     return verifier(toVerify);
   };
 }
 
 /// Occurs when the JWT's alg is not supported by any verifier.
 class UnsupportedVerificationAlgError extends JwtDecodingError {
-  UnsupportedVerificationAlgError(String alg, EncodedJwt jwt)
-      : super('Unsupported algorithm: Cannot verify JWT due to unsupported [$alg] algorithm!', jwt);
+  final ToVerify toVerify;
+
+  EncodedJwt get encodedJwt => toVerify.encodedJwt;
+
+  UnsupportedVerificationAlgError(this.toVerify)
+      : super('Unsupported algorithm: Cannot verify JWT due to unsupported algorithm!');
 }

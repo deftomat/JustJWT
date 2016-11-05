@@ -21,3 +21,7 @@
 
 - Changed JWT's header type from Map<String, String> to Map<String, dynamic>.
 - TokenVerifier and TokenSigner returns Future now.
+
+# 1.3.1
+
+- Errors contain an instance of ToVerify / ToSign class.

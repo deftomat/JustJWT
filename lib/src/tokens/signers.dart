@@ -26,13 +26,17 @@ TokenSigner toTokenSigner(Signer signer) {
 TokenSigner composeTokenSigners(Map<String, TokenSigner> signers) {
   return (ToSign toSign) {
     var alg = toSign.jwt.alg;
-    var signer = signers[alg] ?? (throw new UnsupportedSigningAlgError(toSign.jwt));
+    var signer = signers[alg] ?? (throw new UnsupportedSigningAlgError(toSign));
     return signer(toSign);
   };
 }
 
 /// Occurs when the JWT's alg is not supported by any signer.
 class UnsupportedSigningAlgError extends JwtEncodingError {
-  UnsupportedSigningAlgError(Jwt jwt)
-      : super('Unsupported algorithm: Cannot sign JWT due to unsupported [${jwt.alg}] algorithm!', jwt);
+  final ToSign toSign;
+
+  Jwt get jwt => toSign.jwt;
+
+  UnsupportedSigningAlgError(this.toSign)
+      : super('Unsupported algorithm: Cannot sign JWT due to unsupported algorithm!');
 }

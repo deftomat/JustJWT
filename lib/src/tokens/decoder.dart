@@ -15,7 +15,7 @@ class Decoder extends Converter<EncodedJwt, Future<Jwt>> {
     var payload = _decodeMap(encodedJwt.payload);
     var jwt = new _Jwt.from(header, payload);
 
-    await _checkSignature(jwt, encodedJwt);
+    await _verify(jwt, encodedJwt);
 
     return jwt;
   }
@@ -38,23 +38,26 @@ class Decoder extends Converter<EncodedJwt, Future<Jwt>> {
     return encoded.padRight(normalizedLength, '=');
   }
 
-  Future _checkSignature(Jwt jwt, EncodedJwt encodedJwt) async {
+  Future _verify(Jwt jwt, EncodedJwt encodedJwt) async {
     var signature = _decodeBytes(encodedJwt.signature);
     var toVerify = new ToVerify(jwt, encodedJwt, signature);
 
-    if ((await _verifier(toVerify)) == false) throw new InvalidJwtSignatureError(encodedJwt);
+    if ((await _verifier(toVerify)) == false) throw new JwtVerificationError(toVerify);
   }
 }
 
 /// Occurs when the JWT's signature is not valid.
-class InvalidJwtSignatureError extends JwtDecodingError {
-  InvalidJwtSignatureError(EncodedJwt jwt)
-      : super('Invalid JWT signature: [${jwt.signature}] is not a valid signature!', jwt);
+class JwtVerificationError extends JwtDecodingError {
+  final ToVerify toVerify;
+
+  EncodedJwt get encodedJwt => toVerify.encodedJwt;
+
+  JwtVerificationError(this.toVerify) : super('JWT verification failed!');
 }
 
 /// Occurs when JWT decoding fails.
 abstract class JwtDecodingError extends JwtError {
-  final EncodedJwt jwt;
+  EncodedJwt get encodedJwt;
 
-  JwtDecodingError(String message, this.jwt) : super(message);
+  JwtDecodingError(String message) : super(message);
 }
