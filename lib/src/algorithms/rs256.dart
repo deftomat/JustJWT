@@ -4,10 +4,9 @@ library just_jwt.algorithms.rs256;
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:bignum/bignum.dart';
 import 'package:pointycastle/pointycastle.dart' as pointy;
 import 'package:pointycastle/src/impl/secure_random_base.dart';
-import 'package:pointycastle/src/registry/factory_config.dart';
+import 'package:pointycastle/src/registry/registry.dart';
 import 'package:pointycastle/src/ufixnum.dart';
 import 'package:rsa_pkcs/rsa_pkcs.dart';
 
@@ -31,7 +30,7 @@ Signer createRS256Signer(String pem) {
 
   return (String toSign) {
     var message = new Uint8List.fromList(toSign.codeUnits);
-    return signer.generateSignature(message).bytes;
+    return signer.generateSignature(message);
   };
 }
 
@@ -46,7 +45,7 @@ Verifier createRS256Verifier(String pem) {
   var rawKey = pair.public;
   if (rawKey == null) throw new ArgumentError.value(pem, 'publicPem', 'Public PEM is not valid!');
 
-  var publicKey = new pointy.RSAPublicKey(rawKey.modulus, new BigInteger(rawKey.publicExponent));
+  var publicKey = new pointy.RSAPublicKey(rawKey.modulus, new BigInt(rawKey.publicExponent));
   return _createVerifier(publicKey);
 }
 
@@ -55,8 +54,8 @@ Verifier createRS256Verifier(String pem) {
 /// Parameters are Base64urlUInt-encoded values as described in:
 /// RFC 7518 - JSON WEB Algorithms (https://tools.ietf.org/html/rfc7518#section-6.3)
 Verifier createJwaRS256Verifier(String encodedModulus, String encodedExponent) {
-  var n = new BigInteger.fromBytes(1, BASE64.decode(encodedModulus));
-  var e = new BigInteger.fromBytes(1, BASE64.decode(encodedExponent));
+  var n = new BigInt.fromBytes(1, BASE64.decode(encodedModulus));
+  var e = new BigInt.fromBytes(1, BASE64.decode(encodedExponent));
   var publicKey = new pointy.RSAPublicKey(n, e);
 
   return _createVerifier(publicKey);

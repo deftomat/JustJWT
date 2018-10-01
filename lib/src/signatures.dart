@@ -4,4 +4,4 @@ library just_jwt.signatures;
 typedef bool Verifier(String message, List<int> signature);
 
 /// Returns a signature of the [message].
-typedef List<int> Signer(String message);
+typedef Signature Signer(String message);
