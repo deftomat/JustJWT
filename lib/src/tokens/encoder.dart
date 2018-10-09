@@ -21,8 +21,8 @@ class Encoder extends Converter<Jwt, Future<EncodedJwt>> {
     return new _EncodedJwt(encodedHeader, encodedPayload, encodedSignature);
   }
 
-  String _encodeMap(Map map) => _encodeBytes(JSON.encode(map).codeUnits);
-  String _encodeBytes(List<int> bytes) => BASE64URL.encode(bytes);
+  String _encodeMap(Map map) => _encodeBytes(json.encode(map).codeUnits);
+  String _encodeBytes(List<int> bytes) => base64Url.encode(bytes);
 }
 
 /// Occurs when JWT encoding fails.

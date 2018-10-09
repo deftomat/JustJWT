@@ -33,7 +33,7 @@ void main() {
 
   test('Construction of EncodedJwt should throws an error when string is invalid.', () {
     var malformedJwt = 'header.payload';
-    var expectedError = new isInstanceOf<CannotParseRawJwtError>();
+    var expectedError = const TypeMatcher<CannotParseRawJwtError>();
 
     expect(() => new EncodedJwt(malformedJwt), throwsA(expectedError));
   });

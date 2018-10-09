@@ -22,13 +22,13 @@ class Decoder extends Converter<EncodedJwt, Future<Jwt>> {
 
   Map<String, dynamic> _decodeMap(String encoded) {
     var bytes = _decodeBytes(encoded);
-    var json = new String.fromCharCodes(bytes);
-    return JSON.decode(json);
+    var jsonString = new String.fromCharCodes(bytes);
+    return json.decode(jsonString);
   }
 
   List<int> _decodeBytes(String encoded) {
     var normalized = _normalizeBASE64(encoded);
-    return BASE64URL.decode(normalized);
+    return base64Url.decode(normalized);
   }
 
   String _normalizeBASE64(String encoded) {

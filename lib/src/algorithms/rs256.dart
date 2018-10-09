@@ -45,7 +45,7 @@ Verifier createRS256Verifier(String pem) {
   var rawKey = pair.public;
   if (rawKey == null) throw new ArgumentError.value(pem, 'publicPem', 'Public PEM is not valid!');
 
-  var publicKey = new pointy.RSAPublicKey(rawKey.modulus, new BigInt(rawKey.publicExponent));
+  var publicKey = new pointy.RSAPublicKey(rawKey.modulus, new BigInt.from(rawKey.publicExponent));
   return _createVerifier(publicKey);
 }
 
@@ -54,8 +54,8 @@ Verifier createRS256Verifier(String pem) {
 /// Parameters are Base64urlUInt-encoded values as described in:
 /// RFC 7518 - JSON WEB Algorithms (https://tools.ietf.org/html/rfc7518#section-6.3)
 Verifier createJwaRS256Verifier(String encodedModulus, String encodedExponent) {
-  var n = new BigInt.fromBytes(1, BASE64.decode(encodedModulus));
-  var e = new BigInt.fromBytes(1, BASE64.decode(encodedExponent));
+  var n = new BigInt.from(base64.decode(encodedModulus).buffer.asUint8List()[0]);
+  var e = new BigInt.from(base64.decode(encodedExponent).buffer.asUint8List()[0]);
   var publicKey = new pointy.RSAPublicKey(n, e);
 
   return _createVerifier(publicKey);
@@ -87,7 +87,7 @@ pointy.Signer _createSigner(pointy.CipherParameters parameters, bool forSigning)
 }
 
 class _NullSecureRandom extends SecureRandomBase {
-  static final FactoryConfig FACTORY_CONFIG = new StaticFactoryConfig(pointy.SecureRandom, "Null");
+  static final FactoryConfig FACTORY_CONFIG = new StaticFactoryConfig(pointy.SecureRandom, "Null", null);
 
   var _nextValue = 0;
 

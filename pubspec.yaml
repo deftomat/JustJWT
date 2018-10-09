@@ -10,9 +10,9 @@ environment:
 dependencies:
   crypto: '^2.0.1'
   pointycastle:
-    git: git://github.com/PointyCastle/pointycastle.git
+    git: https://github.com/PointyCastle/pointycastle.git
   rsa_pkcs:
-    git: git://github.com/amaurel/rsa_pkcs.git
+    git: https://github.com/amaurel/rsa_pkcs.git
   collection: '^1.14.11'
 
 dev_dependencies:

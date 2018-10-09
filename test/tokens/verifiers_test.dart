@@ -34,7 +34,7 @@ void main() {
 
     test('should create signer without support for required algorithm.', () {
       var verifier = composeTokenVerifiers(verifiers);
-      var expectedError = new isInstanceOf<UnsupportedVerificationAlgError>();
+      var expectedError = const TypeMatcher<UnsupportedVerificationAlgError>();
 
       expect(() => verifier(toVerify), throwsA(expectedError));
     });

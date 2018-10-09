@@ -24,7 +24,7 @@ void main() {
 
     test('should create signer without support for required algorithm.', () {
       var signer = composeTokenSigners(signers);
-      var expectedError = new isInstanceOf<UnsupportedSigningAlgError>();
+      var expectedError = const TypeMatcher<UnsupportedSigningAlgError>();
 
       expect(() => signer(toSign), throwsA(expectedError));
     });

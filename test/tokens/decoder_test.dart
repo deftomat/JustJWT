@@ -37,7 +37,7 @@ void main() {
     });
 
     test('should throws an InvalidJwtSignatureError.', () async {
-      var expectedError = new isInstanceOf<JwtVerificationError>();
+      var expectedError = const TypeMatcher<JwtVerificationError>();
       expect(decoder.convert(encodedJwt), throwsA(expectedError));
     });
   });
