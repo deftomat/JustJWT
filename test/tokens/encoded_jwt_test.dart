@@ -31,7 +31,9 @@ void main() {
     });
   });
 
-  test('Construction of EncodedJwt should throws an error when string is invalid.', () {
+  test(
+      'Construction of EncodedJwt should throws an error when string is invalid.',
+      () {
     var malformedJwt = 'header.payload';
     var expectedError = const TypeMatcher<CannotParseRawJwtError>();
 

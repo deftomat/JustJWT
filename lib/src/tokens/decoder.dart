@@ -42,7 +42,8 @@ class Decoder extends Converter<EncodedJwt, Future<Jwt>> {
     var signature = _decodeBytes(encodedJwt.signature);
     var toVerify = new ToVerify(jwt, encodedJwt, signature);
 
-    if ((await _verifier(toVerify)) == false) throw new JwtVerificationError(toVerify);
+    if ((await _verifier(toVerify)) == false)
+      throw new JwtVerificationError(toVerify);
   }
 }
 

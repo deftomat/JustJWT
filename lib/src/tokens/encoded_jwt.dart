@@ -35,5 +35,6 @@ class _EncodedJwt implements EncodedJwt {
 
 /// Occurs when an raw JWT string cannot be parsed due to its invalid format.
 class CannotParseRawJwtError extends JwtError {
-  CannotParseRawJwtError(String rawJwt) : super('Cannot parse raw JWT string [$rawJwt]!');
+  CannotParseRawJwtError(String rawJwt)
+      : super('Cannot parse raw JWT string [$rawJwt]!');
 }

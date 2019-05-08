@@ -17,8 +17,10 @@ class _Jwt implements Jwt {
   final Map<String, dynamic> header;
   final Map<String, dynamic> payload;
 
-  factory _Jwt.HS256(Map<String, dynamic> payload) => new _Jwt('HS256', payload);
-  factory _Jwt.RS256(Map<String, dynamic> payload) => new _Jwt('RS256', payload);
+  factory _Jwt.HS256(Map<String, dynamic> payload) =>
+      new _Jwt('HS256', payload);
+  factory _Jwt.RS256(Map<String, dynamic> payload) =>
+      new _Jwt('RS256', payload);
 
   _Jwt(String alg, this.payload)
       : header = new Map.unmodifiable({'alg': alg, 'typ': 'JWT'});

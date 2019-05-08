@@ -16,7 +16,10 @@ void main() {
   });
 
   test('Should combine multiple verifiers.', () async {
-    var verifiers = [(ToVerify toVerify) async => true, (ToVerify toVerify) async => false];
+    var verifiers = [
+      (ToVerify toVerify) async => true,
+      (ToVerify toVerify) async => false
+    ];
     var verifier = combineTokenVerifiers(verifiers);
 
     expect(await verifier(toVerify), isFalse);
