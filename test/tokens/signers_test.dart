@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 import 'package:just_jwt/src/tokens.dart';
-
+import 'dart:async';
 void main() {
   final Jwt jwt = new _Jwt();
   final toSign = new ToSign(jwt, 'a', 'b');
@@ -15,8 +15,8 @@ void main() {
   group('A multiple signers composition', () {
     var signers;
 
-    setUp(() {
-      signers = {
+    setUp(() async {
+      signers = <String, TokenSigner>{
         'alg2': (ToSign toSign) => [2],
         'alg3': (ToSign toSign) => [3],
       };

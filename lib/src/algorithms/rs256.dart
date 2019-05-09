@@ -90,10 +90,7 @@ RSAKeyPair _parsePEM(String pem) {
 pointy.Signer _createSigner(
     pointy.CipherParameters parameters, bool forSigning) {
   var signer = new pointy.Signer('SHA-256/RSA');
-  var params = () =>
-      new pointy.ParametersWithRandom(parameters, new _NullSecureRandom());
-
-  signer.init(forSigning, params());
+  signer.init(forSigning, parameters);
 
   return signer;
 }
