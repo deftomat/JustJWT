@@ -5,9 +5,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:pointycastle/pointycastle.dart' as pointy;
-import 'package:pointycastle/src/impl/secure_random_base.dart';
-import 'package:pointycastle/src/registry/registry.dart';
-import 'package:pointycastle/src/ufixnum.dart';
 import 'package:rsa_pkcs/rsa_pkcs.dart';
 
 import 'package:just_jwt/src/signatures.dart';
@@ -95,15 +92,3 @@ pointy.Signer _createSigner(
   return signer;
 }
 
-class _NullSecureRandom extends SecureRandomBase {
-  static final FactoryConfig FACTORY_CONFIG =
-      new StaticFactoryConfig(pointy.SecureRandom, "Null", null);
-
-  var _nextValue = 0;
-
-  String get algorithmName => "Null";
-
-  void seed(pointy.CipherParameters params) {}
-
-  int nextUint8() => clip8(_nextValue++);
-}
