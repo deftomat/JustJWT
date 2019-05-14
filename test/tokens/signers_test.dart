@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 import 'package:just_jwt/src/tokens.dart';
+
 void main() {
   final Jwt jwt = new _Jwt();
   final toSign = new ToSign(jwt, 'a', 'b');
@@ -28,11 +29,11 @@ void main() {
       expect(() => signer(toSign), throwsA(expectedError));
     });
 
-    test('should create signer with support for required algorithm.', () {
-      signers['alg1'] = (ToSign toSign) => [1];
+    test('should create signer with support for required algorithm.', () async {
+      signers['alg1'] = (ToSign toSign) async => [1];
       var signer = composeTokenSigners(signers);
 
-      expect(signer(toSign), equals([1]));
+      expect(await signer(toSign), equals([1]));
     });
   });
 }
