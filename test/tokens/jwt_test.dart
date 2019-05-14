@@ -16,7 +16,7 @@ testJwt(jwtFactory(Map<String, dynamic> payload), String expectedAlgorithm) {
   Map payload;
 
   setUp(() {
-    payload = <String,dynamic>{'claim': 'value'};
+    payload = <String, dynamic>{'claim': 'value'};
     jwt = jwtFactory(payload);
   });
 
