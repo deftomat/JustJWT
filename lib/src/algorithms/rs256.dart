@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:pointycastle/pointycastle.dart' as pointy;
+import 'package:pointycastle/src/impl/secure_random_base.dart';
+import 'package:pointycastle/src/ufixnum.dart';
 import 'package:rsa_pkcs/rsa_pkcs.dart';
 
 import 'package:just_jwt/src/signatures.dart';
@@ -22,9 +24,10 @@ Signer createRS256Signer(String pem) {
     throw new ArgumentError.value(
         pem, 'privatePem', 'Private PEM is not valid!');
 
-  var privateKey = new pointy.RSAPrivateKey(
+  pointy.PrivateKey privateKey = new pointy.RSAPrivateKey(
       rawKey.modulus, rawKey.privateExponent, rawKey.prime1, rawKey.prime2);
-  var privateKeyParams = new pointy.PrivateKeyParameter(privateKey);
+  pointy.PrivateKeyParameter privateKeyParams =
+      new pointy.PrivateKeyParameter(privateKey);
 
   var signer = _createSigner(privateKeyParams, true);
 
@@ -87,8 +90,18 @@ RSAKeyPair _parsePEM(String pem) {
 pointy.Signer _createSigner(
     pointy.CipherParameters parameters, bool forSigning) {
   var signer = new pointy.Signer('SHA-256/RSA');
-  signer.init(forSigning, parameters);
+  var params = new pointy.ParametersWithRandom(parameters, new _NullSecureRandom());
+  signer.init(forSigning, params);
 
   return signer;
 }
 
+class _NullSecureRandom extends SecureRandomBase {
+  var _nextValue = 0;
+
+  String get algorithmName => "Null";
+
+  void seed(pointy.CipherParameters params) {}
+
+  int nextUint8() => clip8(_nextValue++);
+}
