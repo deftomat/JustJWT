@@ -30,23 +30,24 @@ void main() {
 
     setUp(() {
       verifiers = {
-        'alg2': (ToVerify toVerify) => [2],
-        'alg3': (ToVerify toVerify) => [3],
+        'alg2': (ToVerify toVerify) async => true,
+        'alg3': (ToVerify toVerify) async => false,
       };
     });
 
-    test('should create signer without support for required algorithm.', () {
-      var verifier = composeTokenVerifiers(verifiers);
+    test('should create signer without support for required algorithm.',
+        () async {
+      var verifier = await composeTokenVerifiers(verifiers);
       var expectedError = const TypeMatcher<UnsupportedVerificationAlgError>();
 
       expect(() => verifier(toVerify), throwsA(expectedError));
     });
 
-    test('should create signer with support for required algorithm.', () {
-      verifiers['alg1'] = (ToVerify toVerify) => [1];
+    test('should create signer with support for required algorithm.', () async {
+      verifiers['alg1'] = (ToVerify toVerify) async => true;
       var verifier = composeTokenVerifiers(verifiers);
 
-      expect(verifier(toVerify), equals([1]));
+      expect(await verifier(toVerify), isTrue);
     });
   });
 }
