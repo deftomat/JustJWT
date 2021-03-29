@@ -56,10 +56,10 @@ class _Jwt implements Jwt {
   String get alg => 'alg1';
 
   @override
-  Map<String, String> get header => null;
+  Map<String, String> get header => {};
 
   @override
-  Map<String, dynamic> get payload => null;
+  Map<String, dynamic> get payload => {};
 }
 
 class _EncodedJwt implements EncodedJwt {

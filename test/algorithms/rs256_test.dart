@@ -145,7 +145,7 @@ void main() {
   ];
 
   group('The RS256 signer ', () {
-    Signer signer;
+    late Signer signer;
 
     setUp(() {
       signer = createRS256Signer(privateKey);
@@ -161,7 +161,7 @@ void main() {
   });
 
   group('The RS256 verifier ', () {
-    Verifier verifier;
+    late Verifier verifier;
 
     setUp(() {
       verifier = createRS256Verifier(publicKey);
@@ -177,7 +177,7 @@ void main() {
   });
 
   group('The JWA RS256 verifier ', () {
-    Verifier verifier;
+    late Verifier verifier;
 
     setUp(() {
       verifier = createJwaRS256Verifier(encodedModulus, encodedExponent);
@@ -190,5 +190,5 @@ void main() {
     test('should rejects the corrupted message.', () {
       expect(verifier(corruptedMessage, expectedSignature), isFalse);
     });
-  },skip:true);
+  }, skip: true);
 }

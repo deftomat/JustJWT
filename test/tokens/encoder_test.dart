@@ -3,11 +3,11 @@ import 'package:just_jwt/src/tokens.dart';
 
 void main() {
   final Jwt jwt = new _Jwt();
-  Encoder encoder;
+  late Encoder encoder;
 
   group('Encoding of a Jwt', () {
     final List<int> signature = [0, 1, 2];
-    EncodedJwt encodedJwt;
+    late EncodedJwt encodedJwt;
 
     setUp(() {
       var signer = (ToSign toSign) async => signature;

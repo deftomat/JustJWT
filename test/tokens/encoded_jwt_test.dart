@@ -3,8 +3,8 @@ import 'package:just_jwt/src/tokens.dart';
 
 void main() {
   group('The EncodedJwt ', () {
-    String header, payload, signature, stringifiedJwt;
-    EncodedJwt encodedJwt;
+    late String header, payload, signature, stringifiedJwt;
+    late EncodedJwt encodedJwt;
 
     setUp(() {
       header = 'HEADER';

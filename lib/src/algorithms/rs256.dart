@@ -18,10 +18,6 @@ import 'package:just_jwt/src/signatures.dart';
 Signer createRS256Signer(String pem) {
   RSAKeyPair pair = _parsePEM(pem);
   var rawKey = pair.private;
-  if (rawKey == null)
-    throw new ArgumentError.value(
-        pem, 'privatePem', 'Private PEM is not valid!');
-
   var privateKey = new pointy.RSAPrivateKey(
       rawKey.modulus, rawKey.privateExponent, rawKey.prime1, rawKey.prime2);
   var privateKeyParams = new pointy.PrivateKeyParameter(privateKey);
@@ -30,7 +26,8 @@ Signer createRS256Signer(String pem) {
 
   return (String toSign) {
     var message = new Uint8List.fromList(toSign.codeUnits);
-    pointy.RSASignature sig = signer.generateSignature(message);
+    pointy.RSASignature sig =
+        signer.generateSignature(message) as pointy.RSASignature;
     return sig.bytes;
   };
 }
@@ -44,9 +41,6 @@ Signer createRS256Signer(String pem) {
 Verifier createRS256Verifier(String pem) {
   RSAKeyPair pair = _parsePEM(pem);
   var rawKey = pair.public;
-  if (rawKey == null)
-    throw new ArgumentError.value(pem, 'publicPem', 'Public PEM is not valid!');
-
   var publicKey = new pointy.RSAPublicKey(
       rawKey.modulus, new BigInt.from(rawKey.publicExponent));
   return _createVerifier(publicKey);
@@ -91,4 +85,3 @@ pointy.Signer _createSigner(
 
   return signer;
 }
-

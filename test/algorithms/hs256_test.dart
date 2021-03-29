@@ -42,7 +42,7 @@ void main() {
   ];
 
   group('The HS256 signer ', () {
-    Signer signer;
+    late Signer signer;
 
     setUp(() {
       signer = createHS256Signer(key);
@@ -58,7 +58,7 @@ void main() {
   });
 
   group('The HS256 verifier ', () {
-    Verifier verifier;
+    late Verifier verifier;
 
     setUp(() {
       verifier = createHS256Verifier(key);
