@@ -18,8 +18,11 @@ import 'package:just_jwt/src/signatures.dart';
 Signer createRS256Signer(String pem) {
   RSAKeyPair pair = _parsePEM(pem);
   var rawKey = pair.private;
-  var privateKey = new pointy.RSAPrivateKey(
-      rawKey.modulus, rawKey.privateExponent, rawKey.prime1, rawKey.prime2);
+  var privateKey;
+  if (rawKey != null) {
+    privateKey = new pointy.RSAPrivateKey(
+        rawKey.modulus, rawKey.privateExponent, rawKey.prime1, rawKey.prime2);
+  }
   var privateKeyParams = new pointy.PrivateKeyParameter(privateKey);
 
   var signer = _createSigner(privateKeyParams, true);
@@ -41,8 +44,11 @@ Signer createRS256Signer(String pem) {
 Verifier createRS256Verifier(String pem) {
   RSAKeyPair pair = _parsePEM(pem);
   var rawKey = pair.public;
-  var publicKey = new pointy.RSAPublicKey(
-      rawKey.modulus, new BigInt.from(rawKey.publicExponent));
+  var publicKey;
+  if (rawKey != null) {
+    publicKey = new pointy.RSAPublicKey(
+        rawKey.modulus, new BigInt.from(rawKey.publicExponent));
+  }
   return _createVerifier(publicKey);
 }
 
