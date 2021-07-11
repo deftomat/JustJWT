@@ -3,10 +3,10 @@ import 'package:just_jwt/src/tokens.dart';
 
 void main() {
   final EncodedJwt encodedJwt = new _EncodedJwt();
-  Decoder decoder;
+  late Decoder decoder;
 
   group('Decoding of a valid EncodedJwt ', () {
-    Jwt jwt;
+    late Jwt jwt;
 
     setUp(() {
       var verifier = (ToVerify toVerify) async => true;
@@ -37,7 +37,7 @@ void main() {
     });
 
     test('should throws an InvalidJwtSignatureError.', () async {
-      var expectedError = new isInstanceOf<JwtVerificationError>();
+      var expectedError = const TypeMatcher<JwtVerificationError>();
       expect(decoder.convert(encodedJwt), throwsA(expectedError));
     });
   });

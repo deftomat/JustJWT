@@ -38,5 +38,6 @@ class UnsupportedSigningAlgError extends JwtEncodingError {
   Jwt get jwt => toSign.jwt;
 
   UnsupportedSigningAlgError(this.toSign)
-      : super('Unsupported algorithm: Cannot sign JWT due to unsupported algorithm!');
+      : super(
+            'Unsupported algorithm: Cannot sign JWT due to unsupported algorithm!');
 }

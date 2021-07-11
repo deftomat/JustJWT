@@ -15,7 +15,8 @@ class ToVerify {
 /// Transforms an instance of [Verifier] into an instance of [TokenVerifier].
 TokenVerifier toTokenVerifier(Verifier verifier) {
   return (ToVerify toVerify) async {
-    var message = '${toVerify.encodedJwt.header}.${toVerify.encodedJwt.payload}';
+    var message =
+        '${toVerify.encodedJwt.header}.${toVerify.encodedJwt.payload}';
     return verifier(message, toVerify.signature);
   };
 }
@@ -40,7 +41,8 @@ TokenVerifier combineTokenVerifiers(Iterable<TokenVerifier> verifiers) {
 TokenVerifier composeTokenVerifiers(Map<String, TokenVerifier> verifiers) {
   return (ToVerify toVerify) {
     var alg = toVerify.jwt.alg;
-    var verifier = verifiers[alg] ?? (throw new UnsupportedVerificationAlgError(toVerify));
+    var verifier =
+        verifiers[alg] ?? (throw new UnsupportedVerificationAlgError(toVerify));
     return verifier(toVerify);
   };
 }
@@ -52,5 +54,6 @@ class UnsupportedVerificationAlgError extends JwtDecodingError {
   EncodedJwt get encodedJwt => toVerify.encodedJwt;
 
   UnsupportedVerificationAlgError(this.toVerify)
-      : super('Unsupported algorithm: Cannot verify JWT due to unsupported algorithm!');
+      : super(
+            'Unsupported algorithm: Cannot verify JWT due to unsupported algorithm!');
 }

@@ -3,8 +3,8 @@ import 'package:just_jwt/src/tokens.dart';
 
 void main() {
   group('The EncodedJwt ', () {
-    String header, payload, signature, stringifiedJwt;
-    EncodedJwt encodedJwt;
+    late String header, payload, signature, stringifiedJwt;
+    late EncodedJwt encodedJwt;
 
     setUp(() {
       header = 'HEADER';
@@ -31,9 +31,11 @@ void main() {
     });
   });
 
-  test('Construction of EncodedJwt should throws an error when string is invalid.', () {
+  test(
+      'Construction of EncodedJwt should throws an error when string is invalid.',
+      () {
     var malformedJwt = 'header.payload';
-    var expectedError = new isInstanceOf<CannotParseRawJwtError>();
+    var expectedError = const TypeMatcher<CannotParseRawJwtError>();
 
     expect(() => new EncodedJwt(malformedJwt), throwsA(expectedError));
   });
