@@ -23,7 +23,9 @@ Signer createRS256Signer(String pem) {
     privateKey = new pointy.RSAPrivateKey(
         rawKey.modulus, rawKey.privateExponent, rawKey.prime1, rawKey.prime2);
   }
-  var privateKeyParams = new pointy.PrivateKeyParameter(privateKey);
+
+  var privateKeyParams =
+      new pointy.PrivateKeyParameter<pointy.RSAPrivateKey>(privateKey);
 
   var signer = _createSigner(privateKeyParams, true);
 
