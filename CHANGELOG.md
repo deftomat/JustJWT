@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.0
+- Dart 3.0 updates
+
 ## 2.0.0
 
 - Dart 2.0 updates
