@@ -16,7 +16,10 @@ void main() {
   });
 
   test('Should combine multiple verifiers.', () async {
-    var verifiers = [(ToVerify toVerify) async => true, (ToVerify toVerify) async => false];
+    var verifiers = [
+      (ToVerify toVerify) async => true,
+      (ToVerify toVerify) async => false
+    ];
     var verifier = combineTokenVerifiers(verifiers);
 
     expect(await verifier(toVerify), isFalse);
@@ -26,24 +29,24 @@ void main() {
     var verifiers;
 
     setUp(() {
-      verifiers = {
-        'alg2': (ToVerify toVerify) => [2],
-        'alg3': (ToVerify toVerify) => [3],
+      verifiers = <String, TokenVerifier>{
+        'alg2': (ToVerify toVerify) async => true,
+        'alg3': (ToVerify toVerify) async => false,
       };
     });
 
     test('should create signer without support for required algorithm.', () {
       var verifier = composeTokenVerifiers(verifiers);
-      var expectedError = new isInstanceOf<UnsupportedVerificationAlgError>();
+      var expectedError = const TypeMatcher<UnsupportedVerificationAlgError>();
 
       expect(() => verifier(toVerify), throwsA(expectedError));
     });
 
-    test('should create signer with support for required algorithm.', () {
-      verifiers['alg1'] = (ToVerify toVerify) => [1];
+    test('should create signer with support for required algorithm.', () async {
+      verifiers['alg1'] = (ToVerify toVerify) async => true;
       var verifier = composeTokenVerifiers(verifiers);
 
-      expect(verifier(toVerify), equals([1]));
+      expect(await verifier(toVerify), isTrue);
     });
   });
 }
@@ -53,10 +56,10 @@ class _Jwt implements Jwt {
   String get alg => 'alg1';
 
   @override
-  Map<String, String> get header => null;
+  Map<String, String> get header => {};
 
   @override
-  Map<String, dynamic> get payload => null;
+  Map<String, dynamic> get payload => {};
 }
 
 class _EncodedJwt implements EncodedJwt {

@@ -16,24 +16,24 @@ void main() {
     var signers;
 
     setUp(() {
-      signers = {
-        'alg2': (ToSign toSign) => [2],
-        'alg3': (ToSign toSign) => [3],
+      signers = <String, TokenSigner>{
+        'alg2': (ToSign toSign) async => [2],
+        'alg3': (ToSign toSign) async => [3],
       };
     });
 
     test('should create signer without support for required algorithm.', () {
       var signer = composeTokenSigners(signers);
-      var expectedError = new isInstanceOf<UnsupportedSigningAlgError>();
+      var expectedError = const TypeMatcher<UnsupportedSigningAlgError>();
 
       expect(() => signer(toSign), throwsA(expectedError));
     });
 
-    test('should create signer with support for required algorithm.', () {
-      signers['alg1'] = (ToSign toSign) => [1];
+    test('should create signer with support for required algorithm.', () async {
+      signers['alg1'] = (ToSign toSign) async => [1];
       var signer = composeTokenSigners(signers);
 
-      expect(signer(toSign), equals([1]));
+      expect(await signer(toSign), equals([1]));
     });
   });
 }
@@ -43,8 +43,8 @@ class _Jwt implements Jwt {
   String get alg => 'alg1';
 
   @override
-  Map<String, String> get header => null;
+  Map<String, String> get header => {};
 
   @override
-  Map<String, dynamic> get payload => null;
+  Map<String, dynamic> get payload => {};
 }
